@@ -53,7 +53,7 @@ Without Flux (update this.heroes, our hero data model straight on the view-model
 ```
 updateHero(event, newName) {
 	event.preventDefault();
-	this.heroes.map(hero => hero.id === selectedHero.id ? new Hero(hero.id, newName.value) : hero);
+	this.heroes = this.heroes.map(hero => hero.id === selectedHero.id ? new Hero(hero.id, newName.value) : hero);
 }
 ```
 
