@@ -1,0 +1,22 @@
+{
+  "name": "angular2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "angular2": "^2.0.0-alpha.42",
+    "rx": "^4.0.6",
+    "systemjs": "0.19.2"
+  },
+  "devDependencies": {
+    "live-server": "^0.8.1",
+    "typescript": "^1.6.2"
+  },
+  "scripts": {
+    "tsc": "tsc -p src -w",
+    "start": "live-server --open=src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
