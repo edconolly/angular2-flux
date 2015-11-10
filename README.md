@@ -58,7 +58,7 @@ updateHero(event, newName) {
 ```
 
 With Flux (create an updateHero action)
-src/app/app.ts:64
+[src/app/app.ts:64](https://github.com/edconolly/angular2-flux/blob/master/src/app/app.ts#L64)
 ```
 updateHero(event, newName) {
 	event.preventDefault();
@@ -74,7 +74,7 @@ Our action object, `HeroActions`, performs any of our data access (http, web soc
 In our example we don't have any network connectivity so we simply immediately notify the dispatcher to publish an `HeroActionType.Update` event.
 We could have similarly here published a `HeroActionType.Loading` event and a `HeroActionType.Update` once loading was complete.
 
-src/app/HeroActions.ts:16
+[src/app/HeroActions.ts:16](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroActions.ts#L16)
 ```
 updateHero(hero: Hero) {
 	// Do some http request to save the data.
@@ -91,7 +91,7 @@ The dispatcher, implements a publish / subscribe pattern, so data stores can reg
 In this app we're using observerables to implement that pattern. Observerables are objects with a `subscribe` method, which takes 3 arguments for `next`, `error` and `complete` cases, similar to promises `success` and `error` callbacks.
 Our dispatcher has a `dispatch` method, which will notify all the subscribers of the dispatcher's observable. Let's take a look at how it works.
 
-src/app/Dispatcher.ts
+[src/app/Dispatcher.ts](https://github.com/edconolly/angular2-flux/blob/master/src/app/Dispatcher.ts)
 ```
 constructor() {
 	this.observable = new Observable(observer => {
@@ -109,7 +109,7 @@ So actions objects call the dispatcher, which in turn will notify all of the dis
 In our example we have the `HeroesStore` which holds our data model for our heroes and subscribers to the dispatcher. It only listens to `update` events by using the `filter` operator avaible on Rx's observables. When the dispatcher raises the events the store is interested in the store is responsible for mutating it's data.
 
 We see below how the `HeroesStore` subscribes to dispatcher, when an event of the right type is raised we call `this.updateHeroes(payload.notification)`, the method responsible for changing the data in our data model, `this.heroes`.
-src/app/HeroesStore.ts:23
+[src/app/HeroesStore.ts:23](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroesStore.ts#L23)
 ```
 dispatcher.observable.
 	filter(payload => payload.type === HeroActionType.Update).
@@ -118,7 +118,7 @@ dispatcher.observable.
 
 We close the loop now by having our view controller subscribe to changes on the data model, first by making the data model `HeroesStore` and observable, and then calling `subscribe` in the view controller and assigning our view-model to the data model in `HeroesStore`.
 
-src/app/HeroesStore.ts:17
+[src/app/HeroesStore.ts:17](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroesStore.ts#L17)
 ```
 this.observable = new Observable(observer => {
 	this.notify = () => observer.next(this.heroes);    
@@ -126,7 +126,7 @@ this.observable = new Observable(observer => {
 });
 ```
 
-src/app/app.ts:51
+[src/app/app.ts:51](https://github.com/edconolly/angular2-flux/blob/master/src/app/app.ts#L51)
 ```
 constructor(heroesStore: HeroesStore, private heroActions: HeroActions) {
 	heroesStore.observable.subscribe(x => this.heroes = x);
