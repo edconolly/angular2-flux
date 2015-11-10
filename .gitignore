@@ -1,4 +1,5 @@
 node_modules
+angular2.iml
 .idea
 npm-debug.log
 tsd-debug.log
