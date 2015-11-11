@@ -3,3 +3,5 @@ angular2.iml
 .idea
 npm-debug.log
 tsd-debug.log
+src/**/*.js
+src/**/*.js.map
