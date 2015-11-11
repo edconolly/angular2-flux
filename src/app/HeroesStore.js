@@ -37,14 +37,16 @@ var HeroesStore = (function () {
         // Register with the dispatcher and run update when the update event is fired.
         dispatcher.observable.
             filter(function (payload) { return payload.type === HeroActions_1.HeroActionType.Update; }).
-            subscribe(function (payload) { return _this.updateHeroes(payload.notification); });
+            subscribe(function (payload) {
+            _this.heroes = _this.updateHeroes(payload.notification, _this.heroes);
+            _this.notify();
+        });
     }
     ;
-    HeroesStore.prototype.updateHeroes = function (hero) {
-        this.heroes = this.heroes.map(function (current) {
+    HeroesStore.prototype.updateHeroes = function (hero, heroes) {
+        return this.heroes.map(function (current) {
             return current.id == hero.id ? hero : current;
         });
-        this.notify();
     };
     HeroesStore = __decorate([
         angular2_1.Injectable(), 

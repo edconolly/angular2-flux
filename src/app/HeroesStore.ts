@@ -22,14 +22,16 @@ export class HeroesStore {
         // Register with the dispatcher and run update when the update event is fired.
         dispatcher.observable.
             filter(payload => payload.type === HeroActionType.Update).
-            subscribe((payload: DispatchPayload) => this.updateHeroes(payload.notification));
+            subscribe((payload: DispatchPayload) => {
+                this.heroes = this.updateHeroes(payload.notification, this.heroes);
+                this.notify();
+            });
     };
     
-    private updateHeroes(hero: Hero) {
-        this.heroes = this.heroes.map(current => {
+    private updateHeroes(hero: Hero, heroes: Hero[]): Hero[] {
+        return this.heroes.map(current => {
             return current.id == hero.id ? hero : current;
         });
-        this.notify();
     }
     
     private heroes: Hero[] = [
