@@ -9,13 +9,13 @@ var {Observable} = Rx;
 export class HeroesStore {  
     dispatcher: Dispatcher
     observable: Rx.Observable<Hero[]>;
-    private notify: () => void;
+    private notify: (x: Hero[]) => void;
     
     constructor(dispatcher: Dispatcher) {
         
         // Let the heroes store be observable.
         this.observable = new Observable(observer => {
-            this.notify = () => observer.next(this.heroes);    
+            this.notify = (heroes) => observer.next(heroes);    
             observer.next(this.heroes);
         });
         
@@ -23,8 +23,10 @@ export class HeroesStore {
         dispatcher.observable.
             filter(payload => payload.type === HeroActionType.Update).
             subscribe((payload: DispatchPayload) => {
-                this.heroes = this.updateHeroes(payload.notification, this.heroes);
-                this.notify();
+                const updatedHeroes = this.updateHeroes(payload.notification, this.heroes);
+                
+                this.notify(updatedHeroes);
+                this.heroes = updatedHeroes;
             });
     };
     
