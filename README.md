@@ -58,7 +58,7 @@ updateHero(event, newName) {
 ```
 
 With Flux (create an updateHero action)
-[src/app/app.ts:64](https://github.com/edconolly/angular2-flux/blob/master/src/app/app.ts#L64)
+[src/app/app.ts:65](https://github.com/edconolly/angular2-flux/blob/master/src/app/app.ts#L65)
 ```
 updateHero(event, newName) {
 	event.preventDefault();
@@ -109,16 +109,16 @@ So actions objects call the dispatcher, which in turn will notify all of the dis
 In our example we have the `HeroesStore` which holds our data model for our heroes and subscribers to the dispatcher. It only listens to `update` events by using the `filter` operator avaible on Rx's observables. When the dispatcher raises the events the store is interested in the store is responsible for mutating it's data.
 
 We see below how the `HeroesStore` subscribes to dispatcher, when an event of the right type is raised we call `this.updateHeroes(payload.notification)`, the method responsible for changing the data in our data model, `this.heroes`.
-[src/app/HeroesStore.ts:23](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroesStore.ts#L23)
+[src/app/HeroesStore.ts:25](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroesStore.ts#L25)
 ```
 dispatcher.observable.
 	filter(payload => payload.type === HeroActionType.Update).
 	subscribe((payload: DispatchPayload) => this.updateHeroes(payload.notification));
 ``` 
 
-We close the loop now by having our view controller subscribe to changes on the data model, first by making the data model `HeroesStore` and observable, and then calling `subscribe` in the view controller and assigning our view-model to the data model in `HeroesStore`.
+We close the loop now by having our view controller subscribe to changes on the data model, first by making the data model `HeroesStore` an observable, and then calling `subscribe` in the view controller and assigning our view-model to the data model in `HeroesStore`.
 
-[src/app/HeroesStore.ts:17](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroesStore.ts#L17)
+[src/app/HeroesStore.ts:18](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroesStore.ts#L18)
 ```
 this.observable = new Observable(observer => {
 	this.notify = () => observer.next(this.heroes);    
@@ -126,11 +126,9 @@ this.observable = new Observable(observer => {
 });
 ```
 
-[src/app/app.ts:51](https://github.com/edconolly/angular2-flux/blob/master/src/app/app.ts#L51)
+[src/app/app.ts:52](https://github.com/edconolly/angular2-flux/blob/master/src/app/app.ts#L52)
 ```
-constructor(heroesStore: HeroesStore, private heroActions: HeroActions) {
-	heroesStore.observable.subscribe(x => this.heroes = x);
-};
+heroesStore.subscribe(x => this.heroes = x);
 ```
 
 So when any data changes occur within `HeroesStore`, `this.notify()` is called which in turn will update our view-model.

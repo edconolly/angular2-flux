@@ -14,13 +14,16 @@ interface DispatchCallBack {
 }
 
 export class Dispatcher {
-	public observable: Rx.Observable<DispatchPayload>;
 	private notify: (payload: DispatchPayload) => void;
+	public observable: Rx.Observable<DispatchPayload>;
+	public subscribe;
 	
 	constructor() {
 		this.observable = new Observable(observer => {
 			this.notify = payload => observer.next(payload); 
 		});
+		
+		this.subscribe = this.observable.subscribe.bind(this.observable);
 	}
 	
 	dispatch(payload: DispatchPayload) {

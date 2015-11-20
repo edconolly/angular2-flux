@@ -49,7 +49,8 @@ export class AppComponent {
     newName: Control = new Control('', Validators.required);
     
     constructor(heroesStore: HeroesStore, private heroActions: HeroActions) {
-        heroesStore.observable.subscribe(x => this.heroes = x);
+        heroesStore.subscribe(x => this.heroes = x);
+        this.heroes = heroesStore.state;
     };
 
     onSelect(hero: Hero) {

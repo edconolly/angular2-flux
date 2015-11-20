@@ -7,36 +7,43 @@ var {Observable} = Rx;
 
 @Injectable()
 export class HeroesStore {  
-    dispatcher: Dispatcher
-    observable: Rx.Observable<Hero[]>;
+    private dispatcher: Dispatcher;
+    public observable: Rx.Observable<Hero[]>;
     private notify: (x: Hero[]) => void;
+    public subscribe; 
     
     constructor(dispatcher: Dispatcher) {
         
-        // Let the heroes store be observable.
+        // Let the store be observable through subscribe()    
         this.observable = new Observable(observer => {
-            this.notify = (heroes) => observer.next(heroes);    
-            observer.next(this.heroes);
+            this.notify = (heroes) => observer.next(heroes);
         });
+       
+        this.subscribe = this.observable.subscribe.bind(this.observable);
         
         // Register with the dispatcher and run update when the update event is fired.
         dispatcher.observable.
             filter(payload => payload.type === HeroActionType.Update).
             subscribe((payload: DispatchPayload) => {
-                const updatedHeroes = this.updateHeroes(payload.notification, this.heroes);
-                
+                const updatedHeroes = this.updateHeroes(payload.notification, this._state);      
                 this.notify(updatedHeroes);
-                this.heroes = updatedHeroes;
+                
+                // Save the state
+                this.state = updatedHeroes;
             });
     };
     
     private updateHeroes(hero: Hero, heroes: Hero[]): Hero[] {
-        return this.heroes.map(current => {
+        return heroes.map(current => {
             return current.id == hero.id ? hero : current;
         });
     }
     
-    private heroes: Hero[] = [
+    public get state(): Hero[] {
+        return this._state;
+    } 
+    
+    private _state: Hero[] = [
         { "id": 11, "name": "Mr. Nice Foo Bar" },
         { "id": 12, "name": "Narco" },
         { "id": 13, "name": "Bombasto" },
