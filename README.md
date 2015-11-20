@@ -122,8 +122,9 @@ We close the loop now by having our view controller subscribe to changes on the 
 ```
 this.observable = new Observable(observer => {
 	this.notify = () => observer.next(this.heroes);    
-	observer.next(this.heroes);
 });
+
+this.subscribe = this.observable.subscribe.bind(this.observable);
 ```
 
 [src/app/app.ts:52](https://github.com/edconolly/angular2-flux/blob/master/src/app/app.ts#L52)

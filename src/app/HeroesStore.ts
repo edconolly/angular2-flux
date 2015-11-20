@@ -8,7 +8,7 @@ var {Observable} = Rx;
 @Injectable()
 export class HeroesStore {  
     private dispatcher: Dispatcher;
-    public observable: Rx.Observable<Hero[]>;
+    private observable: Rx.Observable<Hero[]>;
     private notify: (x: Hero[]) => void;
     public subscribe; 
     
