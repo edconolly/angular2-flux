@@ -129,7 +129,7 @@ this.subscribe = this.observable.subscribe.bind(this.observable);
 
 [src/app/app.ts:52](https://github.com/edconolly/angular2-flux/blob/master/src/app/app.ts#L52)
 ```
-heroesStore.subscribe(x => this.heroes = x);
+heroesStore.subscribe(heroes => this.heroes = heroes);
 ```
 
 So when any data changes occur within `HeroesStore`, `this.notify()` is called which in turn will update our view-model.

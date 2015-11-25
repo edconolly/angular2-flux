@@ -49,7 +49,7 @@ export class AppComponent {
     newName: Control = new Control('', Validators.required);
     
     constructor(heroesStore: HeroesStore, private heroActions: HeroActions) {
-        heroesStore.subscribe(x => this.heroes = x);
+        heroesStore.subscribe(heroes => this.heroes = heroes);
         this.heroes = heroesStore.state;
     };
 
