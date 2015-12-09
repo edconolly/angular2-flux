@@ -31,7 +31,7 @@ export class HeroesStore {
                 // Save the state
                 this.state = updatedHeroes;
             });
-    };
+    }
     
     private updateHeroes(hero: Hero, heroes: Hero[]): Hero[] {
         return heroes.map(current => {
@@ -41,7 +41,11 @@ export class HeroesStore {
     
     public get state(): Hero[] {
         return this._state;
-    } 
+    }
+
+    public set state(heroes: Hero[]) {
+        this._state = heroes;
+    }
     
     private _state: Hero[] = [
         { "id": 11, "name": "Mr. Nice Foo Bar" },

@@ -51,11 +51,11 @@ export class AppComponent {
     constructor(heroesStore: HeroesStore, private heroActions: HeroActions) {
         heroesStore.subscribe(heroes => this.heroes = heroes);
         this.heroes = heroesStore.state;
-    };
+    }
 
     onSelect(hero: Hero) {
         this.selectedHero = hero;
-        this.newName.updateValue(hero.name);
+        this.newName.updateValue(hero.name, true);
     }
 
     getSelectedClass(hero: Hero) {

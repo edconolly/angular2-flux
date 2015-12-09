@@ -9,10 +9,6 @@ export interface DispatchPayload {
 	notification: Hero
 }
 
-interface DispatchCallBack {
-	(x: DispatchPayload): void
-}
-
 export class Dispatcher {
 	private notify: (payload: DispatchPayload) => void;
 	public observable: Rx.Observable<DispatchPayload>;
