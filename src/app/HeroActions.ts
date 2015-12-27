@@ -11,7 +11,7 @@ export enum HeroActionType {
 
 @Injectable()
 export class HeroActions {
-	constructor(private dispatcher: Dispatcher) {};
+	constructor(private dispatcher: Dispatcher) {}
 	
 	updateHero(hero: Hero) {
 		// Do some http request to save the data.

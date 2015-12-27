@@ -1,33 +1,32 @@
-declare var require;
 import {Injectable} from 'angular2/angular2'
 import {Dispatcher, DispatchPayload} from './Dispatcher'
 import {HeroActionType} from './HeroActions'
 var Rx = require('@reactivex/rxjs/dist/cjs/Rx');
-var {Observable} = Rx;
+const {Observable} = Rx;
 
 @Injectable()
-export class HeroesStore {  
+export class HeroesStore {
     private dispatcher: Dispatcher;
     private observable: Rx.Observable<Hero[]>;
     private notify: (x: Hero[]) => void;
     public subscribe; 
     
     constructor(dispatcher: Dispatcher) {
-        
-        // Let the store be observable through subscribe()    
+
+        // Let the store be observable through subscribe()
         this.observable = new Observable(observer => {
             this.notify = (heroes) => observer.next(heroes);
         });
-       
+
         this.subscribe = this.observable.subscribe.bind(this.observable);
-        
+
         // Register with the dispatcher and run update when the update event is fired.
         dispatcher.observable.
             filter(payload => payload.type === HeroActionType.Update).
             subscribe((payload: DispatchPayload) => {
-                const updatedHeroes = this.updateHeroes(payload.notification, this._state);      
+                const updatedHeroes = this.updateHeroes(payload.notification, this._state);
                 this.notify(updatedHeroes);
-                
+
                 // Save the state
                 this.state = updatedHeroes;
             });

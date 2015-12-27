@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "angular2": "^2.0.0-alpha.42",
+    "angular2": "2.0.0-alpha.42",
     "systemjs": "0.19.2"
   },
   "devDependencies": {
