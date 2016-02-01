@@ -91,16 +91,17 @@ The dispatcher, implements a publish / subscribe pattern, so data stores can reg
 In this app we're using observerables to implement that pattern. Observerables are objects with a `subscribe` method, which takes 3 arguments for `next`, `error` and `complete` cases, similar to promises `success` and `error` callbacks.
 Our dispatcher has a `dispatch` method, which will notify all the subscribers of the dispatcher's observable. Let's take a look at how it works.
 
+In our instance we're going to use a Subject, so our `dispatch` method can easily trigger an event.
+
 [src/app/Dispatcher.ts](https://github.com/edconolly/angular2-flux/blob/master/src/app/Dispatcher.ts)
 ```
 constructor() {
-	this.observable = new Observable(observer => {
-		this.notify = payload => observer.next(payload); 
-	});
+	this.observable = new Subject();
+    ...
 }
 
 dispatch(payload: DispatchPayload) {
-	this.notify ? this.notify(payload) : console.log('no subscribers for dispatch observable');
+	this.observable.next(payload)
 }
 ```
 
@@ -109,22 +110,34 @@ So actions objects call the dispatcher, which in turn will notify all of the dis
 In our example we have the `HeroesStore` which holds our data model for our heroes and subscribers to the dispatcher. It only listens to `update` events by using the `filter` operator avaible on Rx's observables. When the dispatcher raises the events the store is interested in the store is responsible for mutating it's data.
 
 We see below how the `HeroesStore` subscribes to dispatcher, when an event of the right type is raised we call `this.updateHeroes(payload.notification)`, the method responsible for changing the data in our data model, `this.heroes`.
-[src/app/HeroesStore.ts:25](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroesStore.ts#L25)
+[src/app/HeroesStore.ts:25](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroesStore.ts#L19)
 ```
 dispatcher.observable.
 	filter(payload => payload.type === HeroActionType.Update).
-	subscribe((payload: DispatchPayload) => this.updateHeroes(payload.notification));
+	subscribe((payload: DispatchPayload) => {
+        const updatedHeroes = this.updateHeroes(payload.notification)
+        ...
+    });
 ``` 
 
 We close the loop now by having our view controller subscribe to changes on the data model, first by making the data model `HeroesStore` an observable, and then calling `subscribe` in the view controller and assigning our view-model to the data model in `HeroesStore`.
+We'll also add a call to `next` so that when the state changes, all subsribers will be notified.
 
-[src/app/HeroesStore.ts:18](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroesStore.ts#L18)
+[src/app/HeroesStore.ts:18](https://github.com/edconolly/angular2-flux/blob/master/src/app/HeroesStore.ts#L15)
 ```
-this.observable = new Observable(observer => {
-	this.notify = () => observer.next(this.heroes);    
-});
+this.observable = new Subject();
 
-this.subscribe = this.observable.subscribe.bind(this.observable);
+...
+
+dispatcher.observable.
+    filter(payload => payload.type === HeroActionType.Update).
+    subscribe((payload: DispatchPayload) => {
+        const updatedHeroes = this.updateHeroes(payload.notification, this._state);
+        this.state = updatedHeroes;
+        
+        this.observable.next(updatedHeroes)
+    });
+
 ```
 
 [src/app/app.ts:52](https://github.com/edconolly/angular2-flux/blob/master/src/app/app.ts#L52)

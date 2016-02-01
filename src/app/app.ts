@@ -48,14 +48,15 @@ export class AppComponent {
     selectedHero: Hero;
     newName: Control = new Control('', Validators.required);
     
-    constructor(heroesStore: HeroesStore, private heroActions: HeroActions) {
-        heroesStore.subscribe(heroes => this.heroes = heroes);
+    constructor(private heroesStore: HeroesStore, private heroActions: HeroActions) {
+        this.heroesStore.subscribe(heroes => this.heroes = heroes);
         this.heroes = heroesStore.state;
     }
 
     onSelect(hero: Hero) {
         this.selectedHero = hero;
         this.newName.updateValue(hero.name, true);
+        this.heroesStore.subscribe(heroes => console.log(heroes))
     }
 
     getSelectedClass(hero: Hero) {

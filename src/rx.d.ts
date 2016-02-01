@@ -148,7 +148,7 @@ declare module Rx {
         *  @param {Function} [onCompleted] Action to invoke upon graceful termination of the observable sequence.
         *  @returns {Diposable} A disposable handling the subscriptions and unsubscriptions.
         */
-        subscribe(onNext?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): IDisposable;
+        subscribe(next?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): IDisposable;
     }
 
     export interface Observable<T> {
@@ -167,15 +167,15 @@ declare module Rx {
         *  @param {Function} [onCompleted] Action to invoke upon graceful termination of the observable sequence.
         *  @returns {Diposable} A disposable handling the subscriptions and unsubscriptions.
         */
-        subscribe(onNext?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): IDisposable;
+        subscribe(next?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): IDisposable;
 
         /**
         * Subscribes to the next value in the sequence with an optional "this" argument.
-        * @param {Function} onNext The function to invoke on each element in the observable sequence.
+        * @param {Function} next The function to invoke on each element in the observable sequence.
         * @param {Any} [thisArg] Object to use as this when executing callback.
         * @returns {Disposable} A disposable handling the subscriptions and unsubscriptions.
         */
-        subscribeOnNext(onNext: (value: T) => void, thisArg?: any): IDisposable;
+        subscribeOnNext(next: (value: T) => void, thisArg?: any): IDisposable;
         /**
         * Subscribes to an exceptional condition in the sequence with an optional "this" argument.
         * @param {Function} onError The function to invoke upon exceptional termination of the observable sequence.
@@ -207,7 +207,7 @@ declare module Rx {
         *  @param {Function} [onCompleted] Action to invoke upon graceful termination of the observable sequence.
         *  @returns {Diposable} A disposable handling the subscriptions and unsubscriptions.
         */
-        forEach(onNext?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): IDisposable;
+        forEach(next?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): IDisposable;
     }
 
     export interface ObservableStatic {
@@ -487,7 +487,7 @@ declare module Rx {
         * Notifies the observer of a new element in the sequence.
         * @param {Any} value Next element in the sequence.
         */
-        onNext(value: T): void;
+        next(value: T): void;
         /**
         * Notifies the observer that an exception has occurred.
         * @param {Any} error The error that has occurred.
@@ -504,7 +504,7 @@ declare module Rx {
         * Notifies the observer of a new element in the sequence.
         * @param {Any} value Next element in the sequence.
         */
-        onNext(value: T): void;
+        next(value: T): void;
         /**
         * Notifies the observer that an exception has occurred.
         * @param {Any} error The error that has occurred.
@@ -518,13 +518,13 @@ declare module Rx {
 
     export interface ObserverStatic {
         /**
-        *  Creates an observer from the specified OnNext, along with optional OnError, and OnCompleted actions.
-        * @param {Function} [onNext] Observer's OnNext action implementation.
+        *  Creates an observer from the specified next, along with optional OnError, and OnCompleted actions.
+        * @param {Function} [next] Observer's next action implementation.
         * @param {Function} [onError] Observer's OnError action implementation.
         * @param {Function} [onCompleted] Observer's OnCompleted action implementation.
         * @returns {Observer} The observer object implemented using the given actions.
         */
-        create<T>(onNext?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): Observer<T>;
+        create<T>(next?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): Observer<T>;
     }
 
     /**
@@ -540,7 +540,7 @@ declare module Rx {
          * Invokes the delegate corresponding to the notification or the observer's method corresponding to the notification and returns the produced result.
          *
          * @memberOf Notification
-         * @param {Any} observerOrOnNext Delegate to invoke for an OnNext notification or Observer to invoke the notification on..
+         * @param {Any} observerOrOnNext Delegate to invoke for an next notification or Observer to invoke the notification on..
          * @param {Function} onError Delegate to invoke for an OnError notification.
          * @param {Function} onCompleted Delegate to invoke for an OnCompleted notification.
          * @returns {Any} Result produced by the observation.
@@ -550,12 +550,12 @@ declare module Rx {
          * Invokes the delegate corresponding to the notification or the observer's method corresponding to the notification and returns the produced result.
          *
          * @memberOf Notification
-         * @param {Any} observerOrOnNext Delegate to invoke for an OnNext notification or Observer to invoke the notification on..
+         * @param {Any} observerOrOnNext Delegate to invoke for an next notification or Observer to invoke the notification on..
          * @param {Function} onError Delegate to invoke for an OnError notification.
          * @param {Function} onCompleted Delegate to invoke for an OnCompleted notification.
          * @returns {Any} Result produced by the observation.
          */
-        accept<TResult>(onNext: (value: T) => TResult, onError: (exception: any) => TResult, onCompleted: () => TResult): TResult;
+        accept<TResult>(next: (value: T) => TResult, onError: (exception: any) => TResult, onCompleted: () => TResult): TResult;
 
         /**
          * Returns an observable sequence with a single notification.
@@ -577,9 +577,9 @@ declare module Rx {
         new <T>(kind: any, value: any, exception: any, accept: any, acceptObservable: any, toString: any) : Notification<T>;
 
         /**
-        * Creates an object that represents an OnNext notification to an observer.
+        * Creates an object that represents an next notification to an observer.
         * @param {Any} value The value contained in the notification.
-        * @returns {Notification} The OnNext notification containing the value.
+        * @returns {Notification} The next notification containing the value.
         */
         createOnNext<T>(value: T): Notification<T>;
         /**
@@ -611,7 +611,7 @@ declare module Rx {
             * Notifies the observer of a new element in the sequence.
             * @param {Any} value Next element in the sequence.
             */
-            onNext(value: T): void;
+            next(value: T): void;
             /**
             * Notifies the observer that an exception has occurred.
             * @param {Any} error The error that has occurred.
@@ -652,7 +652,7 @@ declare module Rx {
         * Notifies the observer of a new element in the sequence.
         * @param {Any} value Next element in the sequence.
         */
-        onNext(value: T): void;
+        next(value: T): void;
         /**
         * Notifies the observer that an exception has occurred.
         * @param {Any} error The error that has occurred.
@@ -666,12 +666,12 @@ declare module Rx {
 
     interface AnonymousObserverStatic {
         /**
-         * Creates an observer from the specified OnNext, OnError, and OnCompleted actions.
-         * @param {Any} onNext Observer's OnNext action implementation.
+         * Creates an observer from the specified next, OnError, and OnCompleted actions.
+         * @param {Any} next Observer's next action implementation.
          * @param {Any} onError Observer's OnError action implementation.
          * @param {Any} onCompleted Observer's OnCompleted action implementation.
          */
-        new <T>(onNext?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): AnonymousObserver<T>;
+        new <T>(next?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): AnonymousObserver<T>;
     }
 
     export var AnonymousObserver : AnonymousObserverStatic;
@@ -1622,7 +1622,7 @@ declare module Rx {
         * @param {Function} [onCompleted]  Action to invoke upon graceful termination of the observable sequence. Used if only the observerOrOnNext parameter is also a function.
         * @returns {Observable} The source sequence with the side-effecting behavior applied.
         */
-        do(onNext?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): Observable<T>;
+        do(next?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): Observable<T>;
         /**
         *  Invokes an action for each element in the observable sequence and invokes an action upon graceful or exceptional termination of the observable sequence.
         *  This method can be used for debugging, logging, etc. of query behavior by intercepting the message stream to run arbitrary actions for messages on the pipeline.
@@ -1631,16 +1631,16 @@ declare module Rx {
         * @param {Function} [onCompleted]  Action to invoke upon graceful termination of the observable sequence. Used if only the observerOrOnNext parameter is also a function.
         * @returns {Observable} The source sequence with the side-effecting behavior applied.
         */
-        tap(onNext?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): Observable<T>;
+        tap(next?: (value: T) => void, onError?: (exception: any) => void, onCompleted?: () => void): Observable<T>;
 
         /**
         *  Invokes an action for each element in the observable sequence.
         *  This method can be used for debugging, logging, etc. of query behavior by intercepting the message stream to run arbitrary actions for messages on the pipeline.
-        * @param {Function} onNext Action to invoke for each element in the observable sequence.
+        * @param {Function} next Action to invoke for each element in the observable sequence.
         * @param {Any} [thisArg] Object to use as this when executing callback.
         * @returns {Observable} The source sequence with the side-effecting behavior applied.
         */
-        doOnNext(onNext: (value: T) => void, thisArg?: any): Observable<T>;
+        doOnNext(next: (value: T) => void, thisArg?: any): Observable<T>;
         /**
         *  Invokes an action upon exceptional termination of the observable sequence.
         *  This method can be used for debugging, logging, etc. of query behavior by intercepting the message stream to run arbitrary actions for messages on the pipeline.
@@ -1661,11 +1661,11 @@ declare module Rx {
         /**
         *  Invokes an action for each element in the observable sequence.
         *  This method can be used for debugging, logging, etc. of query behavior by intercepting the message stream to run arbitrary actions for messages on the pipeline.
-        * @param {Function} onNext Action to invoke for each element in the observable sequence.
+        * @param {Function} next Action to invoke for each element in the observable sequence.
         * @param {Any} [thisArg] Object to use as this when executing callback.
         * @returns {Observable} The source sequence with the side-effecting behavior applied.
         */
-        tapOnNext(onNext: (value: T) => void, thisArg?: any): Observable<T>;
+        tapOnNext(next: (value: T) => void, thisArg?: any): Observable<T>;
         /**
         *  Invokes an action upon exceptional termination of the observable sequence.
         *  This method can be used for debugging, logging, etc. of query behavior by intercepting the message stream to run arbitrary actions for messages on the pipeline.
@@ -1747,7 +1747,7 @@ declare module Rx {
          * @example
          *  var timer = Observable.timer(500);
          *  var source = observable.retryWhen(timer);
-         * @param {Observable} [notifier] An observable that triggers the retries or completes the observable with onNext or onCompleted respectively.
+         * @param {Observable} [notifier] An observable that triggers the retries or completes the observable with next or onCompleted respectively.
          * @returns {Observable} An observable sequence producing the elements of the given sequence repeatedly until it terminates successfully.
          */
         retryWhen(notifier: (errors: Observable<any>) => Observable<any>): Observable<T>;
@@ -2015,22 +2015,22 @@ declare module Rx {
     export interface Observable<T> {
         /**
         * Projects each notification of an observable sequence to an observable sequence and concats the resulting observable sequences into one observable sequence.
-        * @param {Function} onNext A transform function to apply to each element; the second parameter of the function represents the index of the source element.
+        * @param {Function} next A transform function to apply to each element; the second parameter of the function represents the index of the source element.
         * @param {Function} onError A transform function to apply when an error occurs in the source sequence.
         * @param {Function} onCompleted A transform function to apply when the end of the source sequence is reached.
         * @param {Any} [thisArg] An optional "this" to use to invoke each transform.
         * @returns {Observable} An observable sequence whose elements are the result of invoking the one-to-many transform function corresponding to each notification in the input sequence.
         */
-        concatMapObserver<T, TResult>(onNext: (value: T, i: number) => ObservableOrPromise<TResult>, onError: (error: any) => ObservableOrPromise<any>, onCompleted: () => ObservableOrPromise<any>, thisArg?: any): Observable<TResult>;
+        concatMapObserver<T, TResult>(next: (value: T, i: number) => ObservableOrPromise<TResult>, onError: (error: any) => ObservableOrPromise<any>, onCompleted: () => ObservableOrPromise<any>, thisArg?: any): Observable<TResult>;
         /**
         * Projects each notification of an observable sequence to an observable sequence and concats the resulting observable sequences into one observable sequence.
-        * @param {Function} onNext A transform function to apply to each element; the second parameter of the function represents the index of the source element.
+        * @param {Function} next A transform function to apply to each element; the second parameter of the function represents the index of the source element.
         * @param {Function} onError A transform function to apply when an error occurs in the source sequence.
         * @param {Function} onCompleted A transform function to apply when the end of the source sequence is reached.
         * @param {Any} [thisArg] An optional "this" to use to invoke each transform.
         * @returns {Observable} An observable sequence whose elements are the result of invoking the one-to-many transform function corresponding to each notification in the input sequence.
         */
-        selectConcatObserver<T, TResult>(onNext: (value: T, i: number) => ObservableOrPromise<TResult>, onError: (error: any) => ObservableOrPromise<any>, onCompleted: () => ObservableOrPromise<any>, thisArg?: any): Observable<TResult>;
+        selectConcatObserver<T, TResult>(next: (value: T, i: number) => ObservableOrPromise<TResult>, onError: (error: any) => ObservableOrPromise<any>, onCompleted: () => ObservableOrPromise<any>, thisArg?: any): Observable<TResult>;
     }
 
     export interface Observable<T> {
@@ -2093,22 +2093,22 @@ declare module Rx {
     export interface Observable<T> {
         /**
         * Projects each notification of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
-        * @param {Function} onNext A transform function to apply to each element; the second parameter of the function represents the index of the source element.
+        * @param {Function} next A transform function to apply to each element; the second parameter of the function represents the index of the source element.
         * @param {Function} onError A transform function to apply when an error occurs in the source sequence.
         * @param {Function} onCompleted A transform function to apply when the end of the source sequence is reached.
         * @param {Any} [thisArg] An optional "this" to use to invoke each transform.
         * @returns {Observable} An observable sequence whose elements are the result of invoking the one-to-many transform function corresponding to each notification in the input sequence.
         */
-        selectManyObserver<T2, T3, T4>(onNext: (value: T, index: number) => Observable<T2>, onError: (exception: any) => Observable<T3>, onCompleted: () => Observable<T4>, thisArg?: any): Observable<T2 | T3 | T4>;
+        selectManyObserver<T2, T3, T4>(next: (value: T, index: number) => Observable<T2>, onError: (exception: any) => Observable<T3>, onCompleted: () => Observable<T4>, thisArg?: any): Observable<T2 | T3 | T4>;
         /**
         * Projects each notification of an observable sequence to an observable sequence and merges the resulting observable sequences into one observable sequence.
-        * @param {Function} onNext A transform function to apply to each element; the second parameter of the function represents the index of the source element.
+        * @param {Function} next A transform function to apply to each element; the second parameter of the function represents the index of the source element.
         * @param {Function} onError A transform function to apply when an error occurs in the source sequence.
         * @param {Function} onCompleted A transform function to apply when the end of the source sequence is reached.
         * @param {Any} [thisArg] An optional "this" to use to invoke each transform.
         * @returns {Observable} An observable sequence whose elements are the result of invoking the one-to-many transform function corresponding to each notification in the input sequence.
         */
-        flatMapObserver<T2, T3, T4>(onNext: (value: T, index: number) => Observable<T2>, onError: (exception: any) => Observable<T3>, onCompleted: () => Observable<T4>, thisArg?: any): Observable<T2 | T3 | T4>;
+        flatMapObserver<T2, T3, T4>(next: (value: T, index: number) => Observable<T2>, onError: (exception: any) => Observable<T3>, onCompleted: () => Observable<T4>, thisArg?: any): Observable<T2 | T3 | T4>;
     }
 
 
